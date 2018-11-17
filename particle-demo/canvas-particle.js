@@ -20,7 +20,7 @@ const ParticleCanvas = window.ParticleCanvas = function({
 	moveY = 0,
 	userCache = false
 }){
-	/*16进制颜色转为RGB格式*/
+	/*16进制颜色转为RGB格式*/ 
 	const color2Rgb = (str, op) => {
 		const reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/
 		let sColor = str.toLowerCase()
@@ -49,7 +49,16 @@ const ParticleCanvas = window.ParticleCanvas = function({
 		return sColor
 	}
 	const getArrRandomItem = (arr) => arr[Math.round(Math.random() * (arr.length - 1 - 0) + 0)]
-
+	const getPixelRatio =  (context) => {
+        var backingStore = context.backingStorePixelRatio ||
+            context.webkitBackingStorePixelRatio ||
+            context.mozBackingStorePixelRatio ||
+            context.msBackingStorePixelRatio ||
+            context.oBackingStorePixelRatio ||
+            context.backingStorePixelRatio || 1;
+        return (window.devicePixelRatio || 1) / backingStore;
+	};
+	
 	class Particle {
 		constructor({context,x, y, r, color, opacity,lineColor = "#fff", lineOpacity = 0.1, lineWidth = 1}) {
 			this.context = context
