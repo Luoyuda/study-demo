@@ -49,15 +49,6 @@ const ParticleCanvas = window.ParticleCanvas = function({
 		return sColor
 	}
 	const getArrRandomItem = (arr) => arr[Math.round(Math.random() * (arr.length - 1 - 0) + 0)]
-	const getPixelRatio =  (context) => {
-        var backingStore = context.backingStorePixelRatio ||
-            context.webkitBackingStorePixelRatio ||
-            context.mozBackingStorePixelRatio ||
-            context.msBackingStorePixelRatio ||
-            context.oBackingStorePixelRatio ||
-            context.backingStorePixelRatio || 1;
-        return (window.devicePixelRatio || 1) / backingStore;
-	};
 	
 	class Particle {
 		constructor({context,x, y, r, color, opacity,lineColor = "#fff", lineOpacity = 0.1, lineWidth = 1}) {
