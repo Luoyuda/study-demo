@@ -2,7 +2,7 @@
 
 const ParticleCanvas = window.ParticleCanvas = function({
 	id = "p-canvas",
-	num = 80,
+	num = 50,
 	isMove = true,
 	width = 0,
 	height = 0,
@@ -18,7 +18,7 @@ const ParticleCanvas = window.ParticleCanvas = function({
 	lineWidth = 1,
 	moveX = 0,
 	moveY = 0,
-	userCache = false
+	userCache = true
 }){
 	/*16进制颜色转为RGB格式*/ 
 	const color2Rgb = (str, op) => {
@@ -50,6 +50,15 @@ const ParticleCanvas = window.ParticleCanvas = function({
 	}
 	const getArrRandomItem = (arr) => arr[Math.round(Math.random() * (arr.length - 1 - 0) + 0)]
 	
+	const getPixelRatio = (context) => {
+        var backingStore = context.backingStorePixelRatio ||
+            context.webkitBackingStorePixelRatio ||
+            context.mozBackingStorePixelRatio ||
+            context.msBackingStorePixelRatio ||
+            context.oBackingStorePixelRatio ||
+            context.backingStorePixelRatio || 1;
+        return (window.devicePixelRatio || 1) / backingStore;
+    };
 	class Particle {
 		constructor({context,x, y, r, color, opacity,lineColor = "#fff", lineOpacity = 0.1, lineWidth = 1}) {
 			this.context = context
@@ -74,7 +83,10 @@ const ParticleCanvas = window.ParticleCanvas = function({
 				//是否使用 离屏渲染
 				this.cacheCanvas = document.createElement("canvas")
 				this.cacheContext = this.cacheCanvas.getContext("2d")
-				this.cacheCanvas.width = this.cacheCanvas.height = this.r * this._ratio 
+				let width = this.r * this._ratio
+				setRetina(this.cacheCanvas,this.cacheContext,width,width)
+				// this.ratio = 6
+				// this.cacheCanvas.width = this.cacheCanvas.height =  
 				this.cache()
 			}
 		}
@@ -86,7 +98,8 @@ const ParticleCanvas = window.ParticleCanvas = function({
 				this.context.closePath()
 				this.context.fill()
 			} else {
-				this.context.drawImage(this.cacheCanvas, this.x - this.r * this.ratio, this.y - this.r * this.ratio)
+				// console.log(this.x - this.r * this.ratio, (this.y - this.r * this.ratio)*2)
+				this.context.drawImage(this.cacheCanvas, (this.x - this.r * this.ratio)*this.context._retinaRatio, (this.y - this.r * this.ratio)*this.context._retinaRatio)
 			}
 		}
 		drawLine(_round) {
@@ -156,9 +169,21 @@ const ParticleCanvas = window.ParticleCanvas = function({
 		myReq = requestAnimationFrame(animate)
 	}
 
+	const setRetina = (canvas,context,width,height) => {
+		var ratio = getPixelRatio(context);
+		canvas.style.width = width + 'px';
+		canvas.style.height = height + 'px';
+		// 缩放绘图
+		context.setTransform(ratio, 0, 0, ratio, 0, 0);
+		canvas.width = width*ratio
+		canvas.height = height*ratio
+		context._retinaRatio = ratio
+		return ratio
+	}
+
+   
 	const init = () => {
-		canvas.width = width
-		canvas.height = height
+		setRetina(canvas,context,width,height)
 		/* #region 是否开启鼠标跟随 */
 		if (isMove && !currentParticle) {
 			currentParticle = new Particle({
@@ -174,15 +199,27 @@ const ParticleCanvas = window.ParticleCanvas = function({
 			}) //独立粒子
 			
 			const moveEvent = (e = window.event) => {
-				currentParticle.x = e.clientX
-				currentParticle.y = e.clientY
+				currentParticle.x = e.clientX || e.touches[0].clientX
+				currentParticle.y = e.clientY || e.touches[0].clientY
 			}
 			const outEvent = () => {currentParticle.x = currentParticle.y = null}
 
-			canvas.removeEventListener("mousemove",moveEvent)
-			canvas.removeEventListener("mouseout", outEvent)
-			canvas.addEventListener("mousemove",moveEvent)
-			canvas.addEventListener("mouseout", outEvent)
+			const eventObject = {
+				'pc':{
+					move:'mousemove',
+					out:'mouseout'
+				},
+				'phone':{
+					move:'touchmove',
+					out:'touchend'
+				}
+			}
+			const event = eventObject[/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent) ? 'phone' : 'pc']
+
+			canvas.removeEventListener(event.move,moveEvent)
+			canvas.removeEventListener(event.out, outEvent)
+			canvas.addEventListener(event.move,moveEvent)
+			canvas.addEventListener(event.out, outEvent)
 		}
 		/* #endregion */
 
