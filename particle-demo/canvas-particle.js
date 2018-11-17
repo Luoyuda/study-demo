@@ -18,7 +18,7 @@ const ParticleCanvas = window.ParticleCanvas = function({
 	lineWidth = 1,
 	moveX = 0,
 	moveY = 0,
-	userCache = true 
+	userCache = false 
 }){
 	/*16进制颜色转为RGB格式*/
 	const color2Rgb = (str, op) => {
