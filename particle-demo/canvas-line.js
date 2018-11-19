@@ -1,24 +1,18 @@
-
-
-const ParticleCanvas = window.ParticleCanvas = function({
+const LineCanvas = window.LineCanvas = function({
 	id = "p-canvas",
-	num = 50,
-	isMove = true,
+	num = 15,
 	width = 0,
 	height = 0,
-	targetColor = ["#fff"],
-	targetPpacity = 0.6,
-	tarP = 10,
 	parColor = ["#fff"],
-	maxParR = 10,
-	minParR = 5,
-	parPpacity = null,
+	pointR = 3,
+	parPpacity = 0.7,
 	lineColor = "#fff",
-	lineOpacity = 0.2,
+	lineOpacity = 0.5,
 	lineWidth = 1,
-	moveX = 0,
-	moveY = 0,
-	userCache = true
+	moveX = 0.8,
+	moveY = 0.8,
+	userCache = true,
+	cacheRatio = 5
 }){
 	/*16进制颜色转为RGB格式*/ 
 	const color2Rgb = (str, op) => {
@@ -49,7 +43,31 @@ const ParticleCanvas = window.ParticleCanvas = function({
 		return sColor
 	}
 	const getArrRandomItem = (arr) => arr[Math.round(Math.random() * (arr.length - 1 - 0) + 0)]
-	
+    
+	const segmentsIntr = (a, b, c, d) => {  
+		// 三角形abc 面积的2倍  
+		var area_abc = (a.x - c.x) * (b.y - c.y) - (a.y - c.y) * (b.x - c.x)  
+		// 三角形abd 面积的2倍  
+		var area_abd = (a.x - d.x) * (b.y - d.y) - (a.y - d.y) * (b.x - d.x)   
+		// 面积符号相同则两点在线段同侧,不相交 (对点在线段上的情况,本例当作不相交处理);  
+		if ( area_abc * area_abd >= 0 ) {  
+			return false  
+		}  
+		// 三角形cda 面积的2倍  
+		var area_cda = (c.x - a.x) * (d.y - a.y) - (c.y - a.y) * (d.x - a.x)  
+		// 三角形cdb 面积的2倍  
+		// 注意: 这里有一个小优化.不需要再用公式计算面积,而是通过已知的三个面积加减得出.  
+		var area_cdb = area_cda + area_abc - area_abd   
+		if ( area_cda * area_cdb >= 0 ) {  
+			return false  
+		}  
+		//计算交点坐标  
+		var t = area_cda / ( area_abd - area_abc )  
+		var dx = t * (b.x - a.x),  
+			dy = t * (b.y - a.y)  
+		return { x: a.x + dx , y: a.y + dy }  
+	}  
+
 	const getPixelRatio = (context) => {
 		var backingStore = context.backingStorePixelRatio ||
             context.webkitBackingStorePixelRatio ||
@@ -59,6 +77,7 @@ const ParticleCanvas = window.ParticleCanvas = function({
             context.backingStorePixelRatio || 1
 		return (window.devicePixelRatio || 1) / backingStore
 	}
+    
 	const setRetina = (canvas,context,width,height) => {
 		var ratio = getPixelRatio(context)
 		if(context._retinaRatio && context._retinaRatio !== ratio){window.location.reload()}
@@ -71,7 +90,7 @@ const ParticleCanvas = window.ParticleCanvas = function({
 		context._retinaRatio = ratio
 		return ratio
 	}
-	
+
 	const getCachePoint = (r,color,cacheRatio) => {
 		let key = r + "cache" + color
 		if(this[key]){return this[key]}
@@ -90,66 +109,103 @@ const ParticleCanvas = window.ParticleCanvas = function({
 		this[key] = cacheCanvas
 		return cacheCanvas
 	}
-
-	class Particle {
-		constructor({context,x, y, r, color,moveX,moveY, opacity,lineColor = "#fff", lineOpacity = 0.1, lineWidth = 1}) {
+    
+	class Line{
+		constructor({x, y ,r, opacity, color ,lineWidth, lineColor, lineOpacity, context, moveX, moveY, cacheRatio, userCache}){
 			this.context = context
-			this.r = r > 1 ? parseInt(r * 10) / 10 : 1 //粒子尺寸
-			this.ratio = 3
-			this._ratio = 2 * this.ratio
-			this.lineWidth = lineWidth
+			this.x = x
+			this.y = y
+			this.r = r
+			this.ratio = cacheRatio
 			this.color = color2Rgb(typeof color === "string" ? color : getArrRandomItem(color), opacity) // 颜色
 			this.lineColor = color2Rgb(typeof lineColor === "string" ? lineColor : getArrRandomItem(lineColor), lineOpacity)
-			if(lineColor != "#fff"){
-				this.color = this.lineColor
-			}else{
-				this.lineColor = this.color
+			this.lineWidth = lineWidth
+            
+			this.target1 = {
+				x: x * Math.random(),
+				moveX: Math.random() * moveX,
+				y: y * Math.random(),
+				moveY: Math.random() * moveY,
 			}
-			//防止初始化越界
-			this.x = x > this.r ? x - this.r : x
-			this.y = y > this.r ? y - this.r : y
-			//初始化最开始的速度
-			this.moveX = Math.random() + moveX
-			this.moveY = Math.random() + moveY
+			this.target2 = {
+				x: x * Math.random(),
+				moveX: Math.random() * moveX,
+				y: y * Math.random(),
+				moveY: Math.random() * moveY,
+			}
+			this.dir = Math.random() > 0.5 ? -1 : 1
+            
+			if(this.dir > 0){
+				//横向
+				this.targetA = {
+					x: 0,
+					y: this.target1.y
+				}
+				this.targetB = {
+					x: this.x,
+					y: this.target2.y
+				}
+			}else{
+				//竖直
+				this.targetA = {
+					x: this.target1.x,
+					y: 0
+				}
+				this.targetB = {
+					x: this.target2.x,
+					y: this.y
+				}
+			}
 			this.userCache = userCache
 		}
-		draw() {
-			if (!this.userCache) {
-				this.context.fillStyle = this.color
-				this.context.beginPath()
-				this.context.arc(this.x, this.y, this.r, 0, 360)
-				this.context.closePath()
-				this.context.fill()
-			} else {
-				this.context.drawImage(getCachePoint(this.r,this.color,this.ratio), (this.x - this.r * this.ratio) * this.context._retinaRatio, (this.y - this.r * this.ratio) * this.context._retinaRatio)
+		draw(){
+			// console.log("draw")
+			this.context.beginPath()
+			if(this.dir > 0){
+				//横向
+				this.targetA.y = this.target1.y
+				this.targetB.y = this.target2.y
+			}else{
+				//竖直
+				this.targetA.x = this.target1.x
+				this.targetB.x = this.target2.x
 			}
+			this.context.moveTo(this.targetA.x, this.targetA.y)
+			this.context.lineTo(this.targetB.x, this.targetB.y)
+			this.context.closePath()
+			this.context.lineWidth = this.lineWidth
+			this.context.strokeStyle = this.lineColor
+			this.context.stroke()
 		}
-		drawLine(_round) {
-			let dx = this.x - _round.x
-			let dy = this.y - _round.y
-			if (Math.sqrt(dx * dx + dy * dy) < 150) {
-				this.context.beginPath()
-				if (this.userCache) {
-					this.context.moveTo(this.x + this.r / this._ratio, this.y + this.r / this._ratio)
-					this.context.lineTo(_round.x + _round.r / this._ratio, _round.y + _round.r / this._ratio)
-				} else {
-					this.context.moveTo(this.x, this.y)
-					this.context.lineTo(_round.x, _round.y)
+		drawPoint(line){
+			let point = segmentsIntr(this.targetA,this.targetB,line.targetA,line.targetB)
+			if(point){
+				if(!this.userCache){
+					this.context.fillStyle = this.color
+					this.context.beginPath()
+					this.context.arc(point.x, point.y, this.r, 0, 360)
+					this.context.closePath()
+					this.context.fill()
+				}else{
+					this.context.drawImage(getCachePoint(this.r,this.color,this.ratio), (point.x - this.r * this.ratio) * this.context._retinaRatio, (point.y - this.r * this.ratio) * this.context._retinaRatio)
 				}
-				this.context.closePath()
-				this.context.lineWidth = this.lineWidth
-				this.context.strokeStyle = this.lineColor
-				this.context.stroke()
 			}
 		}
-		move() {
-			this.moveX = this.x + this.r * 2 < width && this.x > 0 ? this.moveX : -this.moveX
-			this.moveY = this.y + this.r * 2 < height && this.y > 0 ? this.moveY : -this.moveY
-			this.x += this.moveX
-			this.y += this.moveY
+		move(){
+			this.target1.moveX = this.target1.x < this.x && this.target1.x > 0 ? this.target1.moveX : -this.target1.moveX
+			this.target2.moveX = this.target2.x < this.x && this.target2.x > 0 ? this.target2.moveX : -this.target2.moveX
+			this.target1.moveY = this.target1.y < this.y && this.target1.y > 0 ? this.target1.moveY : -this.target1.moveY
+			this.target2.moveY = this.target2.y < this.y && this.target2.y > 0 ? this.target2.moveY : -this.target2.moveY
+            
+			this.target1.x += this.target1.moveX
+			this.target2.x += this.target2.moveX
+			this.target1.y += this.target1.moveY
+			this.target2.y += this.target2.moveY
+			
 			this.draw()
 		}
 	}
+    
 	const canvas = document.getElementById(id) || document.createElement("canvas")
 	if(canvas.id !== id){
 		canvas.id = id
@@ -158,7 +214,6 @@ const ParticleCanvas = window.ParticleCanvas = function({
 	let context = canvas.getContext("2d")
 	let round = [] // 粒子数组
 	let myReq = null // requestAnimationFrameId
-	let currentParticle // 独立粒子
 	let isWResize = width 
 	let isHResize = height 
 	width = width || document.documentElement.clientWidth
@@ -170,66 +225,20 @@ const ParticleCanvas = window.ParticleCanvas = function({
 		for (let i = 0; i < round.length; i++) {
 			round[i].move()
 			for (let j = i + 1; j < round.length; j++) {
-				round[i].drawLine(round[j])
+				round[i].drawPoint(round[j])
 			}
-		}
-		if (isMove && currentParticle.x) {
-			for (let i = 0; i < round.length; i++) {
-				currentParticle.drawLine(round[i])
-			}
-			currentParticle.draw()
 		}
 		myReq = requestAnimationFrame(animate)
 	}
-
    
-	const init = () => {
+	const init = canvas.init = () => {
 		setRetina(canvas,context,width,height)
-		/* #region 是否开启鼠标跟随 */
-		if (isMove && !currentParticle) {
-			currentParticle = new Particle({
-				x: 0,
-				y: 0, 
-				r: tarP, 
-				color: targetColor, 
-				opacity: targetPpacity,
-				lineColor,
-				lineOpacity, 
-				lineWidth,
-				context
-			}) //独立粒子
-			
-			const moveEvent = (e = window.event) => {
-				currentParticle.x = e.clientX || e.touches[0].clientX
-				currentParticle.y = e.clientY || e.touches[0].clientY
-			}
-			const outEvent = () => {currentParticle.x = currentParticle.y = null}
-
-			const eventObject = {
-				"pc": {
-					move: "mousemove",
-					out: "mouseout"
-				},
-				"phone": {
-					move: "touchmove",
-					out: "touchend"
-				}
-			}
-			const event = eventObject[/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent) ? "phone" : "pc"]
-
-			canvas.removeEventListener(event.move,moveEvent)
-			canvas.removeEventListener(event.out, outEvent)
-			canvas.addEventListener(event.move,moveEvent)
-			canvas.addEventListener(event.out, outEvent)
-		}
-		/* #endregion */
-
 		/* #region 初始化粒子 */
 		for (let i = 0; i < num; i++) {
-			round[i] = new Particle({
-				x: Math.random() * width,
-				y: Math.random() * height, 
-				r: Math.random() * Math.round(Math.random() * (maxParR - minParR) + minParR), 
+			round[i] = new Line({
+				x: width,
+				y: height, 
+				r: pointR, 
 				color: parColor, 
 				opacity: parPpacity,
 				lineColor,
@@ -237,15 +246,15 @@ const ParticleCanvas = window.ParticleCanvas = function({
 				lineWidth,
 				context,
 				moveX,
-				moveY
+				moveY,
+				userCache,
+				cacheRatio
 			})
-			
 		}
 		/* #endregion */
 		/* #region 执行动画 */
 		animate()
 		/* #endregion */
-		
 	}
 
 	const resize = () => {
@@ -283,6 +292,6 @@ const ParticleCanvas = window.ParticleCanvas = function({
 	return canvas
 }
 
-const canvas = ParticleCanvas({})
+const canvas = LineCanvas({})
 console.log(canvas)
 
