@@ -11,7 +11,7 @@ const LineCanvas = window.LineCanvas = function({
 	lineWidth = 1,
 	moveX = 0.8,
 	moveY = 0.8,
-	userCache = true,
+	userCache = false,
 	cacheRatio = 5
 }){
 	/*16进制颜色转为RGB格式*/ 
@@ -42,6 +42,8 @@ const LineCanvas = window.LineCanvas = function({
 		}
 		return sColor
 	}
+	const toFixed = (a, n) => parseFloat(a.toFixed(n || 1))
+    
 	const getArrRandomItem = (arr) => arr[Math.round(Math.random() * (arr.length - 1 - 0) + 0)]
     
 	const segmentsIntr = (a, b, c, d) => {  
@@ -170,8 +172,8 @@ const LineCanvas = window.LineCanvas = function({
 				this.targetA.x = this.target1.x
 				this.targetB.x = this.target2.x
 			}
-			this.context.moveTo(this.targetA.x, this.targetA.y)
-			this.context.lineTo(this.targetB.x, this.targetB.y)
+			this.context.moveTo(toFixed(this.targetA.x), toFixed(this.targetA.y))
+			this.context.lineTo(toFixed(this.targetB.x), toFixed(this.targetB.y))
 			this.context.closePath()
 			this.context.lineWidth = this.lineWidth
 			this.context.strokeStyle = this.lineColor
@@ -183,7 +185,7 @@ const LineCanvas = window.LineCanvas = function({
 				if(!this.userCache){
 					this.context.fillStyle = this.color
 					this.context.beginPath()
-					this.context.arc(point.x, point.y, this.r, 0, 360)
+					this.context.arc(toFixed(point.x), toFixed(point.y), this.r, 0, 360)
 					this.context.closePath()
 					this.context.fill()
 				}else{
