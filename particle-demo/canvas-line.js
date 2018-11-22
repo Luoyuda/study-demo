@@ -1,3 +1,130 @@
+const PIXEL_RATIO = /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent) ? 3 : 2
+//hidpi-canvas.min.js 核心代码
+;(function(prototype) {
+
+	var forEach = function(obj, func) {
+			for (var p in obj) {
+				if (obj.hasOwnProperty(p)) {
+					func(obj[p], p)
+				}
+			}
+		},
+
+		ratioArgs = {
+			"fillRect": "all",
+			"clearRect": "all",
+			"strokeRect": "all",
+			"moveTo": "all",
+			"lineTo": "all",
+			"arc": [0,1,2],
+			"arcTo": "all",
+			"bezierCurveTo": "all",
+			"isPointinPath": "all",
+			"isPointinStroke": "all",
+			"quadraticCurveTo": "all",
+			"rect": "all",
+			"translate": "all",
+			"createRadialGradient": "all",
+			"createLinearGradient": "all"
+		}
+
+	forEach(ratioArgs, function(value, key) {
+		prototype[key] = (function(_super) {
+			return function() {
+				var i, len,
+					args = Array.prototype.slice.call(arguments)
+
+				if (value === "all") {
+					args = args.map(function(a) {
+						return a * PIXEL_RATIO
+					})
+				}
+				else if (Array.isArray(value)) {
+					for (i = 0, len = value.length; i < len; i++) {
+						args[value[i]] *= PIXEL_RATIO
+					}
+				}
+
+				return _super.apply(this, args)
+			}
+		})(prototype[key])
+	})
+
+	// Stroke lineWidth adjustment
+	prototype.stroke = (function(_super) {
+		return function() {
+			this.lineWidth *= PIXEL_RATIO
+			_super.apply(this, arguments)
+			this.lineWidth /= PIXEL_RATIO
+		}
+	})(prototype.stroke)
+
+	// Text
+	//
+	prototype.fillText = (function(_super) {
+		return function() {
+			var args = Array.prototype.slice.call(arguments)
+
+			args[1] *= PIXEL_RATIO // x
+			args[2] *= PIXEL_RATIO // y
+
+			this.font = this.font.replace(
+				/(\d+)(px|em|rem|pt)/g,
+				function(w, m, u) {
+					return m * PIXEL_RATIO + u
+				}
+			)
+
+			_super.apply(this, args)
+
+			this.font = this.font.replace(
+				/(\d+)(px|em|rem|pt)/g,
+				function(w, m, u) {
+					return m / PIXEL_RATIO + u
+				}
+			)
+		}
+	})(prototype.fillText)
+
+	prototype.strokeText = (function(_super) {
+		return function() {
+			var args = Array.prototype.slice.call(arguments)
+
+			args[1] *= PIXEL_RATIO // x
+			args[2] *= PIXEL_RATIO // y
+
+			this.font = this.font.replace(
+				/(\d+)(px|em|rem|pt)/g,
+				function(w, m, u) {
+					return m * PIXEL_RATIO + u
+				}
+			)
+
+			_super.apply(this, args)
+
+			this.font = this.font.replace(
+				/(\d+)(px|em|rem|pt)/g,
+				function(w, m, u) {
+					return m / PIXEL_RATIO + u
+				}
+			)
+		}
+	})(prototype.strokeText)
+})(CanvasRenderingContext2D.prototype)
+
+//兼容 Retina 屏幕
+const setRetina = (canvas,context,width,height) => {
+	var ratio = PIXEL_RATIO
+	canvas.style.width = width + "px"
+	canvas.style.height = height + "px"
+	// 缩放绘图
+	context.setTransform(ratio, 0, 0, ratio, 0, 0)
+	canvas.width = width * ratio
+	canvas.height = height * ratio
+	context._retinaRatio = ratio
+	return ratio
+}
+
 // 链式调用
 function Canvas2DContext(canvas) {
 	if (typeof canvas === "string") {
@@ -109,48 +236,29 @@ const segmentsIntr = (a, b, c, d) => {
 		dy = t * (b.y - a.y)  
 	return { x: a.x + dx , y: a.y + dy }  
 }  
-
-const getPixelRatio = (context) => {
-	var backingStore = context.backingStorePixelRatio ||
-            context.webkitBackingStorePixelRatio ||
-            context.mozBackingStorePixelRatio ||
-            context.msBackingStorePixelRatio ||
-            context.oBackingStorePixelRatio ||
-            context.backingStorePixelRatio || 1
-	return (window.devicePixelRatio || 1) / backingStore
-}
-//兼容 Retina 屏幕
-const setRetina = (canvas,context,width,height) => {
-	var ratio = getPixelRatio(context)
-	if(context._retinaRatio && context._retinaRatio !== ratio){window.location.reload()}
-	canvas.style.width = width + "px"
-	canvas.style.height = height + "px"
-	// 缩放绘图
-	context.setTransform(ratio, 0, 0, ratio, 0, 0)
-	canvas.width = width * ratio
-	canvas.height = height * ratio
-	context._retinaRatio = ratio
-	return ratio
-}
 //离屏缓存
 const getCachePoint = (r,color,cacheRatio) => {
 	let key = r + "cache" + color
 	if(this[key]){return this[key]}
-	let _ratio = 2 * cacheRatio
-	let width = r * _ratio
 	//离屏渲染
-	const cacheCanvas = document.createElement("canvas")
-	const cacheContext = Canvas2DContext(cacheCanvas)
+	const _ratio = 2 * cacheRatio,
+		width = r * _ratio,
+		cR = toFixed(r * cacheRatio),
+		cacheCanvas = document.createElement("canvas"),
+		cacheContext = Canvas2DContext(cacheCanvas)
 	setRetina(cacheCanvas,cacheContext,width,width)
+	// cacheCanvas.width = cacheCanvas.height = width
 	cacheContext.save()
 		.fillStyle(color)
-		.arc(r * cacheRatio, r * cacheRatio, r, 0, 360)
+		.arc(cR, cR, cR, 0, 360)
 		.closePath()
 		.fill()
 		.restore()
 	this[key] = cacheCanvas
+
 	return cacheCanvas
 }
+
 //防抖，避免resize占用过多资源
 const throttle = function(type, name, obj) {
 	obj = obj || window
@@ -168,17 +276,17 @@ const throttle = function(type, name, obj) {
 
 const LineCanvas = window.LineCanvas = function({
 	id = "p-canvas",
-	num = 15,
+	num = 12,
 	width = 0,
 	height = 0,
-	parColor = ["#fff"],
+	parColor = ["#2C5364"],
 	pointR = 3,
-	parPpacity = 0.7,
+	parPpacity = 1,
 	lineColor = "#fff",
 	lineOpacity = 0.5,
 	lineWidth = 1,
-	moveX = 0.8,
-	moveY = 0.8,
+	moveX = 1.2,
+	moveY = 1.2,
 	userCache = true,
 	cacheRatio = 5
 }){
@@ -270,7 +378,13 @@ const LineCanvas = window.LineCanvas = function({
 						.closePath()
 						.fill()
 				}else{
-					this.context.drawImage(getCachePoint(this.r,this.color,this.ratio), (point.x - this.r * this.ratio) * this.context._retinaRatio, (point.y - this.r * this.ratio) * this.context._retinaRatio)
+					this.context.drawImage(
+						getCachePoint(this.r,this.color,this.ratio), 
+						(point.x - this.r) * this.context._retinaRatio, 
+						(point.y - this.r) * this.context._retinaRatio,
+						this.r * 2 * this.context._retinaRatio,
+						this.r * 2 * this.context._retinaRatio
+					)
 				}
 			}
 		}
@@ -294,6 +408,8 @@ const LineCanvas = window.LineCanvas = function({
 		context.clearRect(0, 0, width, height)
 		for (let i = 0; i < round.length; i++) {
 			round[i].move()
+		}
+		for (let i = 0; i < round.length; i++) {
 			for (let j = i + 1; j < round.length; j++) {
 				round[i].drawPoint(round[j])
 			}
