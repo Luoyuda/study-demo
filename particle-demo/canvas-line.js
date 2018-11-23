@@ -258,21 +258,80 @@ const getCachePoint = (r,color,cacheRatio) => {
 
 	return cacheCanvas
 }
-
-//防抖，避免resize占用过多资源
-const throttle = function(type, name, obj) {
-	obj = obj || window
-	let running = false
-	let func = function() {
-		if (running) { return }
-		running = true
-		requestAnimationFrame(function() {
-			obj.dispatchEvent(new CustomEvent(name))
-			running = false
-		})
+//节流，避免resize占用过多资源
+const throttle = function (func,wait,options) {
+	var context,args,timeout
+	var previous = 0
+	options = options || {}
+	// leading：false 表示禁用第一次执行
+	// trailing: false 表示禁用停止触发的回调
+	var later = function(){
+		previous = options.leading === false ? 0 : new Date().getTime()
+		timeout = null
+		func.apply(context, args)
 	}
-	obj.addEventListener(type, func)
+	var throttled = function(){
+		var now = +new Date()
+		if (!previous && options.leading === false) {previous = now}
+		// 下次触发 func 的剩余时间
+		var remaining = wait - (now - previous)
+		context = this
+		args = arguments
+		// 如果没有剩余的时间了或者你改了系统时间
+		if(remaining > wait || remaining <= 0){
+			if (timeout) {
+				clearTimeout(timeout)
+				timeout = null
+			}
+			previous = now
+			func.apply(context, args)
+		}else if(!timeout && options.trailing !== false){
+			timeout = setTimeout(later, remaining)
+		}
+	}
+	throttled.cancel = function() {
+		clearTimeout(timeout)
+		previous = 0
+		timeout = null
+	}
+	return throttled
 }
+//防抖，避免resize占用过多资源
+const debounce = function(func,wait,immediate){
+	//防抖
+	//定义一个定时器。
+	var timeout,result
+	var debounced = function() {
+		//获取 this
+		var context = this
+		//获取参数
+		var args = arguments
+		//清空定时器
+		if(timeout){clearTimeout(timeout)}
+		if(immediate){
+			//立即触发，但是需要等待 n 秒后才可以重新触发执行
+			var callNow = !timeout
+			console.log(callNow)
+			timeout = setTimeout(function(){
+				timeout = null
+			}, wait)
+			if (callNow) {result = func.apply(context, args)}
+		}else{
+			//触发后开始定时，
+			timeout = setTimeout(function(){
+				func.apply(context,args)
+			}, wait)
+		}
+		return result
+	}
+	debounced.cancel = function(){
+		// 当immediate 为 true，上一次执行后立即，取消定时器，下一次可以实现立即触发
+		if(timeout) {clearTimeout(timeout)}
+		timeout = null
+	}
+	return debounced
+}
+
 
 const LineCanvas = window.LineCanvas = function({
 	id = "p-canvas",
@@ -418,6 +477,7 @@ const LineCanvas = window.LineCanvas = function({
 	}
    
 	const init = () => {
+		console.log("init")
 		setRetina(canvas,context,width,height)
 		/* #region 初始化粒子 */
 		for (let i = 0; i < num; i++) {
@@ -454,9 +514,8 @@ const LineCanvas = window.LineCanvas = function({
 		this.timeout = setTimeout(init, 20)
 	}
 
-	throttle("resize", "optimizedResize")
 	init()
-	if(!isWResize || !isHResize){window.addEventListener("optimizedResize",resize)}
+	if(!isWResize || !isHResize){window.addEventListener("resize",throttle(resize, 100))}
 
 	return canvas
 }
