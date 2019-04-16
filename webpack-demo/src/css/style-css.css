@@ -1,0 +1,10 @@
+/* style-css.css */
+body{
+  background-color: #eee;
+  display: flex;
+  background-image: url(../image/big1.jpg)
+}
+.icon{
+  width: 40px;
+  height: 40px;
+}

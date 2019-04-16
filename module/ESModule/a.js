@@ -18,5 +18,5 @@ export {
 }
 //重命名导出
 export { d as e}
-//默认导出，一个模块只能有一个默认导出 
+//默认导出，一个模块只能有一个默认导出
 export default d

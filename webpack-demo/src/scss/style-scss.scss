@@ -1,0 +1,52 @@
+.funky {
+  display: flex;
+  font: {
+    family: fantasy;
+    size: 30px;
+    weight: bold;
+  }
+  background-image: url(../image/small.png) !important;
+}
+.icon-1{
+  width: 15px;
+  height: 15px;
+  background-image: url(../icons/icon@1x/claim_icon.png)
+}
+.icon-2{
+  width: 100px;
+  height: 100px;
+  background-image: url(../icons/icon@1x/icon_login_qq.png?model-a)
+}
+.icon-3{
+  width: 100px;
+  height: 100px;
+  background-image: url(../icons/icon@1x/icon_login_qq_active.png?model-a)
+}
+.icon-4{
+  width: 100px;
+  height: 100px;
+  background-image: url(../icons/icon@1x/icon_login_weixin.png)
+}
+.icon-5{
+  width: 100px;
+  height: 100px;
+  background-image: url(../icons/icon@1x/icon_login_weixin_active.png)
+}
+
+.funky{
+  .icon-1{
+    background-image: url(../icons/icon@2x/claim_icon@2x.png)
+  }
+  .icon-2{
+    background-image: url(../icons/icon@2x/icon_login_qq@2x.png?model-a)
+  }
+  .icon-3{
+    background-image: url(../icons/icon@2x/icon_login_qq_active@2x.png?model-a)
+  }
+  .icon-4{
+    background-image: url(../icons/icon@2x/icon_login_weixin@2x.png)
+  }
+  .icon-5{
+    background-image: url(../icons/icon@2x/icon_login_weixin_active@2x.png)
+  }
+}

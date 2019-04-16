@@ -1,0 +1,5 @@
+// .babelrc
+{
+  "presets": ["@babel/preset-env"],   // 从右向左解析
+  "plugins": ["@babel/plugin-syntax-dynamic-import"]
+}
