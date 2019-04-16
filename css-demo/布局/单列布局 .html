@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- 公共样式 -->
+  <style>
+    *{
+      margin:0;
+      padding:0;
+    }
+    .header,.banner,.footer{
+      min-height: 50px;
+      border-bottom: 1px solid #003300;
+      background: #c6ffdd; /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #c6ffdd, #fbd786, #f7797d); /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #c6ffdd, #fbd786, #f7797d); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+    .parent{
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+  <!-- margin -->
+  <div class='parent layout1'>
+    <style>
+      /* 
+        margin + max-width
+        1.子元素 设定 margin: 0 auto; 指定宽度
+        或者 父元素设定 margin: 0 auto; 指定最大宽度 子元素宽度百分百
+        实用性：兼容性好，需指定宽度
+      */
+      .layout1 .header,.layout1 .banner,.layout1 .footer{
+        margin: 0 auto;
+        max-width: 960px;
+      }
+      /* 或者父元素直接  margin: 0 auto; max-width: 960px; 子元素宽度百分百*/
+    </style>
+    <div class='header'>header</div>
+    <div class='banner'> 
+      <p>margin + max-width</p>
+      <p>1.子元素 设定 margin: 0 auto; 指定宽度</p>
+      <p>或者 父元素设定 margin: 0 auto; 指定最大宽度 子元素宽度百分百</p>
+      <p>实用性：兼容性好，需指定宽度</p>
+    </div>
+    <div class='footer'>footer</div>
+  </div>
+  <!-- inline-block text-align -->
+  <div class='parent layout2'>
+    <style>
+      /* 
+        inline-block text-align width max-width
+        1.设置 子元素 display:inline-block 最大宽度 和 宽度百分
+        2.父元素 text-align: center
+        实用性：兼容性好，需要设定父元素，且子元素需指定宽度
+      */
+      .layout2.parent{
+        text-align: center;
+      }
+      .layout2 .header,.layout2 .banner,.layout2 .footer{
+        max-width: 960px;
+        width: 100%;
+        display: inline-block;
+      }
+    </style>
+    <div class='header'>header</div>
+    <div class='banner'> 
+      <p>inline-block text-align width max-width 兼容性好，需要设定父元素，且子元素需要指定宽度 </p>
+      <p>1.设置 子元素 display:inline-block 最大宽度 和 宽度百分百</p>
+      <p>2.父元素 text-align: center </p>
+      <p>实用性：兼容性好，需要设定父元素，且子元素需指定宽度 </p>
+    </div>
+    <div class='footer'>footer</div>
+  </div>
+  <!-- flexbox -->
+  <div class='parent layout3'>
+    <style>
+      /* 
+        flexbox
+        1.父元素display:flex; 
+        2.父元素 设定 子元素 排列方向 flex-direction: column;
+        3.父元素 设定 子元素 根据交叉轴的对齐方式 align-items: center;
+        4.子元素 设定宽度，最大宽度
+        实用性：PC端ie9+ 移动端常用，写起来简洁明了
+      */
+      .layout3.parent{
+        display:flex; 
+        align-items: center;
+        flex-direction: column;
+      }
+      .layout3 .header,.layout3 .banner,.layout3 .footer{
+        max-width: 960px;
+        width: 100%;
+      }
+    </style>
+    <div class='header'>header</div>
+    <div class='banner'> 
+      <p>flexbox</p>
+      <p>1.父元素display:flex; </p>
+      <p>2.父元素 设定 子元素 排列方向 flex-direction: column;</p>
+      <p>3.父元素 设定 子元素 根据交叉轴的对齐方式 align-items: center;</p>
+      <p>4.子元素 设定宽度，最大宽度</p>
+      <p>实用性：PC端ie9+ 移动端常用，写起来简洁明了</p>
+    </div>
+    <div class='footer'>footer</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+    }
+    .left{
+      background-color: rgba(0, 0, 0, 0.1);
+      width: 200px;
+    }
+    .right{
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+    .parent{
+      margin-bottom: 30px;
+      background: #c6ffdd; /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #c6ffdd, #fbd786, #f7797d); /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #c6ffdd, #fbd786, #f7797d); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+  </style>
+</head>
+<body>
+  <!-- 浮动+边距 -->
+  <div class='parent layout1'>
+    <style>
+      /* 
+        float + margin
+        1.浮动左列
+        2.右列自适应，且设置margin-left
+        实用性：兼容性好，但是浮动后超出无法顶开父容器高度
+      */
+      .layout1 .left{
+        float:left;
+      }
+      .layout1 .right{
+        margin-left: 200px;
+      }
+    </style>
+    <div class="left">
+      <p>left</p>
+    </div>
+    <div class="right">
+      <p>float + margin</p>
+      <p>1.浮动左列</p>
+      <p>2.右列自适应，且设置margin-left</p>
+      <p>实用性：兼容性好，但是浮动后超出无法顶开父容器高度</p>
+    </div>
+  </div>
+  <!-- 全浮动 -->
+  <div class='parent layout2'>
+    <style>
+      /* 
+        float + margin
+        1.浮动左列 
+        2.右列自适应, 右列负margin-left
+        3.右列子元素正margin-left
+        实用性：兼容性虽好，但是相当麻烦的方案，从布局角度看 右列 部分超到了 左列 部分，还额外需要一个子元素，父元素由于两个子元素都浮动，高度彻底塌陷，还额外需要清除浮动
+      */
+      .layout2 .left{
+        float:left;
+      }
+      .layout2 .right{
+        width: 100%;
+        float: right;
+        margin-left: -200px;
+      }
+      .layout2 .right-box{
+        margin-left: 200px;
+      }
+      .layout2{
+        height: 120px;
+      }
+    </style>
+    <div class="left">
+      <p>left</p>
+    </div>
+    <div class="right">
+      <div class="right-box">
+        <p>float + margin</p>
+        <p>1.浮动左列 </p>
+        <p>2.右列自适应, 右列负margin-left</p>
+        <p>3.右列子元素正margin-left</p>
+        <p>实用性：兼容性虽好，但是相当麻烦的方案，从布局角度看 右列 部分超到了 左列 部分，还额外需要一个子元素，父元素由于两个子元素都浮动，高度彻底塌陷，还额外需要清除浮动</p>
+      </div>
+    </div>
+  </div>
+  <!-- 浮动 overflow 触发BFC -->
+  <div class='parent layout3'>
+    <style>
+      /* 
+        float + overflow
+        1.浮动左列，左列指定宽度
+        2.右列overflow: hidden, 触发右列 BFC 模式
+        3.父元素 overflow 之后，触发 BFC 模式，浮动后仍然可以撑开父容器高度
+        实用性：兼容性好，较为常用的实现方式，基本没什么后遗症
+      */
+      .layout3{
+        overflow: hidden;
+      }
+      .layout3 .left{
+        float:left;
+      }
+      .layout3 .right{
+        overflow: hidden;
+      }
+    </style>
+    <div class="left">
+      <p>left</p>
+      <p>left</p>
+      <p>left</p>
+      <p>left</p>
+      <p>left</p>
+      <p>left</p>
+    </div>
+    <div class="right">
+      <p>float + overflow</p>
+      <p>1.浮动左列，左列指定宽度</p>
+      <p>2.右列overflow: hidden, 触发右列 BFC 模式</p>
+      <p>3.父元素 overflow 之后，触发 BFC 模式，浮动后仍然可以撑开父容器高度</p>
+      <p>实用性：兼容性好，较为常用的实现方式，基本没什么后遗症</p>
+    </div>
+  </div>
+  <!-- 表格 -->
+  <div class='parent layout4'>
+    <style>
+      /* 
+        表格布局
+        1.父元素设置 display:table; table-layout:fixed; 设置宽度
+        2.子元素设置 table-cell
+        3.左列设置宽度
+        实用性，不需要用到浮动，高度不会塌陷，且可以实现双边等高布局，但是也只会是等高布局，无法设置左右列边距
+      */
+      .layout4 .parent{
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+      }
+      .layout4 .right,.layout4 .left{
+        display: table-cell;
+      }
+    </style>
+    <div class="left">
+      <p>left</p>
+    </div>
+    <div class="right">
+      <p>表格布局</p>
+      <p>1.父元素设置 display:table; table-layout:fixed; 设置宽度</p>
+      <p>2.子元素设置 table-cell</p>
+      <p>3.左列设置宽度</p>
+      <p>实用性：不需要用到浮动，高度不会塌陷，且可以实现双边等高布局，但是也只会是等高布局，无法设置左右列边距</p>
+    </div>
+  </div>
+  <!-- flexbox -->
+  <div class='parent layout5'>
+    <style>
+      /* 
+        flexbox
+        1.父元素 display:flex
+        2.左列设置宽度，右列flex:1
+        3.右列flex:1
+        4.align-items: start; 设置为 start 就不撑满
+        实用性：PC端IE9+，简洁明了的布局方式，可以通过控制 align-items 实现等高或者不等高。
+      */
+      .layout5.parent{
+        display: flex;
+      }
+      .layout5 .right{
+        flex:1;
+      }
+    </style>
+    <div class="left">
+      <p>left</p>
+    </div>
+    <div class="right">
+      <p>flexbox</p>
+      <p>1.父元素 display:flex</p>
+      <p>2.左列设置宽度，右列flex:1</p>
+      <p>3.右列flex:1</p>
+      <p>4.align-items: start; 设置为 start 就不撑满</p>
+      <p>实用性：PC端IE9+，简洁明了的布局方式，可以通过控制 align-items 实现等高或者不等高。</p>
+    </div>
+  </div>
+  <!-- 网格布局 -->
+  <div class='parent layout6'>
+    <style>
+      /* 
+        网格布局
+        1.父元素 设置 display:grid 
+        2.父元素 设置 grid-template-columns: 200px 1fr; 实现 左列100px 右列自适应
+        3.align-items: start; 设置为 start 就不撑满
+        实用性：更加简洁，高效的二维布局方式，但是兼容性 ie11+ 还是相对蛋疼
+      */
+      .parent.layout6{
+        display: grid;
+        grid-template-columns: 200px 1fr;
+      }
+    </style>
+    <div class="left">
+      <p>left</p>
+    </div>
+    <div class="right">
+      <p>网格布局</p>
+      <p>1.父元素 设置 display:grid </p>
+      <p>2.父元素 设置 grid-template-columns: 200px 1fr; 实现 左列100px 右列自适应</p>
+      <p>3.align-items: start; 设置为 start 就不撑满</p>
+      <p>实用性：更加简洁，高效的二维布局方式，但是兼容性 ie11+ 还是相对蛋疼</p>
+    </div>
+  </div>
+</body>
+</html>
