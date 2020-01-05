@@ -1,0 +1,12 @@
+{
+  "name": "fp-demo",
+  "version": "1.0.0",
+  "description": "函数式编程",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
