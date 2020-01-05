@@ -53,5 +53,24 @@ const incr = count => ++count
 
 ## 函数式编程的优点
 * 使任务分解成粒度更小的函数单元
+  * 模块化单元分解成多个逻辑子任务
+  * 保持每个子任务都拥有单一的目的（单一职责原则）
+  * 使用组合，组合所有逻辑子任务，最终完成整个程序
+  * 例如：找到大象放进冰箱
+    ```javascript
+    const find = item => console.log(`find ${item}`) || item
+    const into = item => console.log(`put ${item} into`) || item
+    const eat = item => console.log(`eat ${item}`) || item
+    const run = (...funcs) => (item) => {
+        funcs.reduce((prev, func) => func(prev), item)
+    }
+    run(find, into)('elephant')
+    // find elephant
+    // put elephant into
+    run(find, eat, into)('apple')
+    // find apple
+    // eat apple
+    // put apple into
+    ```
 * 使用流氏的调用链来处理数据
 * 通过响应式的范式来降低事件驱动代码的复杂性

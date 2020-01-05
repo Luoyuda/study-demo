@@ -4,7 +4,7 @@
  * @Author: 陈夏雨
  * @Date: 2020-01-05 14:19:18
  * @LastEditors  : 陈夏雨
- * @LastEditTime : 2020-01-05 14:59:58
+ * @LastEditTime : 2020-01-05 18:00:03
  */
 /*
 * 声明式编程：将程序的描述跟求值进行分离，更加关注如何用各类表达式来描述程序逻辑
@@ -53,3 +53,27 @@ const incr = count => ++count
  * 不可变性：输入的变量在执行完函数之后，依然保持着原有的样子。
  * 比如上述代码中 array ，在 map 函数执行结束后，并没有对其产生副作用。
  */
+
+/**
+ * 函数式编程的优点
+ * 1.使任务分解成粒度更小的函数单元
+    * 模块化单元分解成多个逻辑子任务
+    * 保持每个子任务都拥有单一的目的（单一职责原则）
+    * 使用组合，组合所有逻辑子任务，最终完成整个程序
+    * 例如：找到大象放进冰箱
+* 使用流氏的调用链来处理数据
+* 通过响应式的范式来降低事件驱动代码的复杂性
+ */
+const find = item => console.log(`find ${item}`) || item
+const into = item => console.log(`put ${item} into`) || item
+const eat = item => console.log(`eat ${item}`) || item
+const run = (...funcs) => (item) => {
+    funcs.reduce((prev, func) => func(prev), item)
+}
+run(find, into)('elephant')
+// find elephant
+// put elephant into
+run(find, eat, into)('apple')
+// find apple
+// eat apple
+// put apple into
