@@ -74,7 +74,7 @@ interface Person{
     readonly id: number,
     name: string,
     age?: number | undefined,
-    [propName: string]: string | number | undefined
+    [propName: string]: any
 }
 let curry: Person = {
     id: 1,

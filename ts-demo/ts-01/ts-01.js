@@ -1,6 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const common_1 = require("../common");
 /**
  * 布尔值
  * boolean
@@ -145,8 +143,6 @@ const getLenByList = (str) => {
 };
 console.log(getLenByList(123321));
 console.log(getLenByList('123321'));
-// console.log(common)
-console.log(common_1.common2);
 /**
  * Never 类型表示的是那些永不存在的值的类型
  */
