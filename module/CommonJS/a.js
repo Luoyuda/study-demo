@@ -1,8 +1,11 @@
-let b = 0
+let b =  {
+    count: 1
+}
 exports.a = () => {
     console.log('a')
-    b+=1
+    b.count+=1
 }
+exports.bCount = b
 exports.b = () => {
     console.log(b)
 }

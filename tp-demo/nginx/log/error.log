@@ -1,0 +1,54 @@
+2020/06/01 02:31:18 [error] 6#6: *1 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.17.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost:8283", referrer: "http://localhost:8283/"
+2020/06/01 02:32:08 [error] 6#6: *1 open() "/usr/share/nginx/html/h5admin/pika_public" failed (2: No such file or directory), client: 172.17.0.1, server: localhost, request: "GET //h5admin/pika_public HTTP/1.1", host: "localhost:8283"
+2020/06/01 02:32:15 [error] 6#6: *1 open() "/usr/share/nginx/html/h5admin/pika_public/index.html" failed (2: No such file or directory), client: 172.17.0.1, server: localhost, request: "GET /h5admin/pika_public/index.html HTTP/1.1", host: "localhost:8283"
+2020/06/01 02:32:20 [error] 6#6: *1 open() "/usr/share/nginx/html/h5admin/pika_public/index.php" failed (2: No such file or directory), client: 172.17.0.1, server: localhost, request: "GET /h5admin/pika_public/index.php HTTP/1.1", host: "localhost:8283"
+2020/06/01 02:40:20 [emerg] 12#12: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2020/06/01 02:40:20 [emerg] 12#12: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2020/06/01 02:40:20 [emerg] 12#12: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2020/06/01 02:40:20 [emerg] 12#12: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2020/06/01 02:41:27 [emerg] 13#13: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2020/06/01 02:41:27 [emerg] 13#13: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2020/06/01 02:41:27 [emerg] 13#13: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2020/06/01 02:41:27 [emerg] 13#13: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2020/06/01 02:41:27 [emerg] 13#13: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2020/06/01 02:41:27 [emerg] 13#13: still could not bind()
+2020/06/01 02:43:05 [error] 6#6: *4 connect() failed (111: Connection refused) while connecting to upstream, client: 172.17.0.1, server: local.h5admin, request: "GET / HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "local.h5admin:8283"
+2020/06/01 02:43:05 [error] 6#6: *4 open() "/usr/local/var/www/h5admin/pika_public/50x.html" failed (2: No such file or directory), client: 172.17.0.1, server: local.h5admin, request: "GET / HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "local.h5admin:8283"
+2020/06/01 02:43:06 [error] 6#6: *4 connect() failed (111: Connection refused) while connecting to upstream, client: 172.17.0.1, server: local.h5admin, request: "GET /favicon.ico HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "local.h5admin:8283", referrer: "http://local.h5admin:8283/"
+2020/06/01 02:43:06 [error] 6#6: *4 open() "/usr/local/var/www/h5admin/pika_public/50x.html" failed (2: No such file or directory), client: 172.17.0.1, server: local.h5admin, request: "GET /favicon.ico HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "local.h5admin:8283", referrer: "http://local.h5admin:8283/"
+2020/06/01 02:43:12 [error] 6#6: *4 connect() failed (111: Connection refused) while connecting to upstream, client: 172.17.0.1, server: local.h5admin, request: "GET /index.html HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "local.h5admin:8283"
+2020/06/01 02:43:12 [error] 6#6: *4 open() "/usr/local/var/www/h5admin/pika_public/50x.html" failed (2: No such file or directory), client: 172.17.0.1, server: local.h5admin, request: "GET /index.html HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "local.h5admin:8283"
+2020/06/01 02:44:54 [error] 7#7: *5 open() "/usr/share/nginx/html/test.html" failed (2: No such file or directory), client: 172.17.0.1, server: localhost, request: "GET /test.html HTTP/1.1", host: "localhost:8283"
+2020/06/01 02:45:54 [error] 6#6: *1 open() "/usr/share/nginx/html/test.html" failed (2: No such file or directory), client: 172.17.0.1, server: localhost, request: "GET /test.html HTTP/1.1", host: "localhost:8283"
+2020/06/01 02:47:09 [notice] 12#12: signal process started
+2020/06/01 02:47:26 [warn] 14#14: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2020/06/01 02:47:26 [notice] 14#14: signal process started
+2020/06/01 02:47:26 [warn] 1#1: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2020/06/01 02:47:32 [error] 15#15: *5 connect() failed (111: Connection refused) while connecting to upstream, client: 172.17.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "localhost:8283"
+2020/06/01 02:47:32 [error] 15#15: *5 open() "/usr/local/var/www/h5admin/pika_public/50x.html" failed (2: No such file or directory), client: 172.17.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "localhost:8283"
+2020/06/01 03:12:36 [warn] 1#1: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2020/06/01 03:30:17 [warn] 14#14: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2020/06/01 03:30:17 [notice] 14#14: signal process started
+2020/06/01 03:30:17 [warn] 1#1: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2020/06/01 03:30:24 [error] 15#15: *3 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "fastcgi://192.168.0.3:9000", host: "localhost:8283"
+2020/06/01 03:30:24 [error] 15#15: *3 open() "/usr/local/var/www/h5admin/pika_public/50x.html" failed (2: No such file or directory), client: 192.168.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "fastcgi://192.168.0.3:9000", host: "localhost:8283"
+2020/06/01 03:30:30 [error] 15#15: *3 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.0.1, server: localhost, request: "GET /index.php HTTP/1.1", upstream: "fastcgi://192.168.0.3:9000", host: "localhost:8283"
+2020/06/01 03:30:30 [error] 15#15: *3 open() "/usr/local/var/www/h5admin/pika_public/50x.html" failed (2: No such file or directory), client: 192.168.0.1, server: localhost, request: "GET /index.php HTTP/1.1", upstream: "fastcgi://192.168.0.3:9000", host: "localhost:8283"
+2020/06/01 03:53:37 [alert] 1#1: unknown process 51 exited on signal 15
+2020/06/01 03:57:24 [error] 15#15: *8 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.0.6, server: localhost, request: "GET / HTTP/1.1", upstream: "fastcgi://192.168.0.3:9000", host: "192.168.0.2"
+2020/06/01 03:57:24 [error] 15#15: *8 open() "/usr/local/var/www/h5admin/pika_public/50x.html" failed (2: No such file or directory), client: 192.168.0.6, server: localhost, request: "GET / HTTP/1.1", upstream: "fastcgi://192.168.0.3:9000", host: "192.168.0.2"
+2020/06/01 04:02:34 [error] 15#15: *10 FastCGI sent in stderr: "Primary script unknown" while reading response header from upstream, client: 192.168.0.1, server: localhost, request: "GET /index.php HTTP/1.1", upstream: "fastcgi://192.168.0.3:9000", host: "localhost:8283"
+2020/06/01 04:02:41 [error] 15#15: *10 FastCGI sent in stderr: "Primary script unknown" while reading response header from upstream, client: 192.168.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "fastcgi://192.168.0.3:9000", host: "localhost:8283"
+2020/06/01 04:20:49 [error] 15#15: *14 FastCGI sent in stderr: "Primary script unknown" while reading response header from upstream, client: 192.168.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "fastcgi://192.168.0.3:9000", host: "localhost:8283"
+2020/06/01 04:20:54 [error] 15#15: *14 FastCGI sent in stderr: "Primary script unknown" while reading response header from upstream, client: 192.168.0.1, server: localhost, request: "GET /index.php HTTP/1.1", upstream: "fastcgi://192.168.0.3:9000", host: "localhost:8283"
+2020/06/01 04:25:43 [warn] 93#93: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2020/06/01 04:25:43 [notice] 93#93: signal process started
+2020/06/01 04:25:43 [warn] 1#1: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2020/06/01 04:25:46 [error] 94#94: *18 FastCGI sent in stderr: "Primary script unknown" while reading response header from upstream, client: 192.168.0.1, server: localhost, request: "GET /index.php HTTP/1.1", upstream: "fastcgi://192.168.0.3:9000", host: "localhost:8283"
+2020/06/01 04:29:57 [error] 94#94: *22 FastCGI sent in stderr: "Primary script unknown" while reading response header from upstream, client: 192.168.0.1, server: localhost, request: "GET /index.php HTTP/1.1", upstream: "fastcgi://192.168.0.3:9000", host: "localhost:8283"
+2020/06/01 04:30:51 [warn] 95#95: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2020/06/01 04:30:51 [notice] 95#95: signal process started
+2020/06/01 04:30:51 [warn] 1#1: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2020/06/01 06:29:10 [warn] 1#1: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2020/06/01 07:41:12 [warn] 1#1: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2020/06/01 09:54:15 [warn] 1#1: conflicting server name "localhost" on 0.0.0.0:80, ignored
