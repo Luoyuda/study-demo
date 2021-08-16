@@ -21,7 +21,7 @@ DBMS（数据库管理系统）
 * 数据库管理软件，科学有效的管理我们的数据 。
 * MySQL
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200607093019620.png" alt="image-20200607093019620" style="zoom:50%;" />
+<img src="../image/image-20200607093019620.png" alt="image-20200607093019620" style="zoom:50%;" />
 
 ## MySQL
 
@@ -473,7 +473,7 @@ SELECT * FROM result WHERE studentresult BETWEEN 91 AND 98;
 
 ### 连表查询
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200607171605956.png" alt="image-20200607171605956" style="zoom:50%;" />
+<img src="../image/image-20200607171605956.png" alt="image-20200607171605956" style="zoom:50%;" />
 
 ```mysql
 -- INNER JOIN

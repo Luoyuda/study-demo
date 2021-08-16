@@ -10,15 +10,15 @@
 
 1. 本地版本控制
 
-   <img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200606185219416.png" alt="image-20200606185219416" style="zoom:50%;" />
+   <img src="../image/image-20200606185219416.png" alt="image-20200606185219416" style="zoom:50%;" />
 
 2. 集中版本控制
 
-   <img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200606185154878.png" alt="image-20200606185154878" style="zoom:50%;" />
+   <img src="../image/image-20200606185154878.png" alt="image-20200606185154878" style="zoom:50%;" />
 
 3. 分布式版本控制
 
-   <img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200606185400626.png" alt="image-20200606185400626" style="zoom:50%;" />
+   <img src="../image/image-20200606185400626.png" alt="image-20200606185400626" style="zoom:50%;" />
 
 ## SVN和GIT 区别
 
@@ -38,7 +38,7 @@ Git是版本控制系统，没有中央服务器，每个人的电脑都是一�
 
 ## Git 核心
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200606195231221.png" alt="image-20200606195231221" style="zoom:50%;" />
+<img src="../image/image-20200606195231221.png" alt="image-20200606195231221" style="zoom:50%;" />
 
 ##### 工作目录（Working directory）
 
@@ -151,7 +151,7 @@ doc/*.txt # 忽略 doc/目录下的txt 但是不忽略doc下二级目录的文�
 
 ### Git 分支
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200607001032374.png" alt="image-20200607001032374" style="zoom:50%;" />
+<img src="../image/image-20200607001032374.png" alt="image-20200607001032374" style="zoom:50%;" />
 
 ```sh
 ➜  js-demo git:(master) git branch # 查看本地分支
@@ -304,7 +304,7 @@ Rebase 实际上就是取出一系列的提交记录，“复制”它们，然�
 
 Rebase 的优势就是可以创造更线性的提交历史
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20201204143731672.png" alt="image-20201204143731672" style="zoom:80%;" />
+<img src="../image/image-20201204143731672.png" alt="image-20201204143731672" style="zoom:80%;" />
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20201204144212521.png" alt="image-20201204144212521" style="zoom:80%;" />
+<img src="../image/image-20201204144212521.png" alt="image-20201204144212521" style="zoom:80%;" />
 

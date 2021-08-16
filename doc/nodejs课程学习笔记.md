@@ -109,7 +109,7 @@ I/O：input/output，系统的输入输出
 
 ## nodejs架构
 
-![image-20200726152806188](/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200726152806188.png)
+![image-20200726152806188](../image/image-20200726152806188.png)
 
 应用层：   即 JavaScript 交互层，常见的就是 Node.js 的模块，比如 http，fs
 
@@ -121,7 +121,7 @@ LIBUV层： 是跨平台的底层封装，实现了 事件循环、文件操作�
 
 ## nodejs事件循环
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200726160803945.png" alt="image-20200726160803945" style="zoom:50%;" />
+<img src="../image/image-20200726160803945.png" alt="image-20200726160803945" style="zoom:50%;" />
 
 1. **`timers` 阶段**: 这个阶段执行 `setTimeout(callback)` 和 `setInterval(callback)` 预定的 callback;
 
@@ -151,11 +151,11 @@ Node事件循环中的异步队列包含两种队列：`macro`（宏任务）队
 
 node：microtask会在事件循环的各个阶段之间执行，也就是一个阶段执行完毕，就会去执行microtask队列的任务。
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200726201754821.png" alt="image-20200726201754821" style="zoom:50%;" />
+<img src="../image/image-20200726201754821.png" alt="image-20200726201754821" style="zoom:50%;" />
 
 浏览器：microtask的任务队列是每个macrotask执行完之后执行。
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200726201956156.png" alt="image-20200726201956156" style="zoom:50%;" />
+<img src="../image/image-20200726201956156.png" alt="image-20200726201956156" style="zoom:50%;" />
 
 ## node常用模块
 
@@ -284,7 +284,7 @@ server8001.listen(8001);
 - end事件：用来监听stream数据输入的完成
 - pipe方法：用来做数据流转
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200727172708184.png" alt="image-20200727172708184" style="zoom:50%;" />
+<img src="../image/image-20200727172708184.png" alt="image-20200727172708184" style="zoom:50%;" />
 
 **stream从哪里来-soucre**
 
@@ -464,11 +464,11 @@ doSomeThings() // 六点起床啦 两秒后 七点出门啦
 
 #### 网络模型
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200729225017516.png" alt="image-20200729225017516" style="zoom:50%;" />
+<img src="../image/image-20200729225017516.png" alt="image-20200729225017516" style="zoom:50%;" />
 
 #### 三次握手
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200729230814848.png" alt="image-20200729230814848" style="zoom:50%;" />
+<img src="../image/image-20200729230814848.png" alt="image-20200729230814848" style="zoom:50%;" />
 
 #### 使用net创建TCP链接
 
@@ -657,7 +657,7 @@ HTTP全称是超文本传输协议，是构建在TCP之上，属于应用层协�
 
 HTTP 是以 `request` 为单位进行服务的，TCP会话可以用于多次请求和响应，是以`connect`为单位进行服务的
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200728223652310.png" alt="image-20200728223652310" style="zoom:50%;" />
+<img src="../image/image-20200728223652310.png" alt="image-20200728223652310" style="zoom:50%;" />
 
 ##### HTTP 请求
 

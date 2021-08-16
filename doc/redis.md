@@ -10,7 +10,7 @@
 
 第一种架构：APP > DAL > Mysql  使用单机 Mysql
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200531225803736.png" alt="image-20200531225803736" style="zoom:50%;" />
+<img src="../image/image-20200531225803736.png" alt="image-20200531225803736" style="zoom:50%;" />
 
 应用瓶颈
 
@@ -22,15 +22,15 @@
 
 第二种架构出现了：APP > DAL > CACHE > Mysql 使用缓存+从库做读操作，使用主库进行写入
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200531230053103.png" alt="image-20200531230053103" style="zoom:50%;" />
+<img src="../image/image-20200531230053103.png" alt="image-20200531230053103" style="zoom:50%;" />
 
 第三种架构 分库分表 + 水平拆分 + Mysql 集群
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200531230350651.png" alt="image-20200531230350651" style="zoom:50%;" />
+<img src="../image/image-20200531230350651.png" alt="image-20200531230350651" style="zoom:50%;" />
 
 现在数据量越来越大，关系型数据库越发头大，NoSQL数据库的产生就是为了解决大规模数据集合多重数据种类带来的挑战。
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200531231606576.png" alt="image-20200531231606576" style="zoom:50%;" />
+<img src="../image/image-20200531231606576.png" alt="image-20200531231606576" style="zoom:50%;" />
 
 ### 什么是NoSQL
 
@@ -95,7 +95,7 @@ Neo4j
 
 InfoGrid
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200531234313230.png" alt="image-20200531234313230" style="zoom:50%;" />
+<img src="../image/image-20200531234313230.png" alt="image-20200531234313230" style="zoom:50%;" />
 
 ## Redis 
 
@@ -1308,7 +1308,7 @@ Redis 会单独创建一个子进程来进行持久化，将数据写入一个�
 
 如果需要大规模的数据恢复，且对数据恢复的完整性不是非常敏感，则RDB比AOF更加高效。
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200606103248219.png" alt="image-20200606103248219" style="zoom:50%;" />
+<img src="../image/image-20200606103248219.png" alt="image-20200606103248219" style="zoom:50%;" />
 
 ##### 优点：
 
@@ -1341,7 +1341,7 @@ Redis 会单独创建一个子进程来进行持久化，将数据写入一个�
 
 备份自动生成一个 append only.aof
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200606110817924.png" alt="image-20200606110817924" style="zoom:50%;" />
+<img src="../image/image-20200606110817924.png" alt="image-20200606110817924" style="zoom:50%;" />
 
 优点：
 
@@ -1358,7 +1358,7 @@ Redis 会单独创建一个子进程来进行持久化，将数据写入一个�
 
 Redis 发布订阅（pub/sub）是一种消息通信模式：发送者（pub）发送消息，订阅者（sub）接收消息
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200606114029767.png" alt="image-20200606114029767" style="zoom:50%;" />
+<img src="../image/image-20200606114029767.png" alt="image-20200606114029767" style="zoom:50%;" />
 
 ```sh
 # 订阅一个频道
@@ -1552,11 +1552,11 @@ OK
 
 #### 普通模型
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200606151355877.png" alt="image-20200606151355877" style="zoom:50%;" />
+<img src="../image/image-20200606151355877.png" alt="image-20200606151355877" style="zoom:50%;" />
 
 #### 毛毛虫模型
 
-![image-20200606151252741](/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200606151252741.png)
+![image-20200606151252741](../image/image-20200606151252741.png)
 
 如果主机断开，需要手动设置中间从机为主机
 
@@ -1568,7 +1568,7 @@ SLAVEOF no one
 
 主从复制在服务器故障的情况下，需要手动干预，比较麻烦，所以需要哨兵架构来解决问题
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200606152211472.png" alt="image-20200606152211472" style="zoom:50%;" />
+<img src="../image/image-20200606152211472.png" alt="image-20200606152211472" style="zoom:50%;" />
 
 哨兵通过发送命令，等待redis服务器响应，从而监控多个redis实例是否正常运行
 
@@ -1577,7 +1577,7 @@ SLAVEOF no one
 1. 通过发送命令，让redis服务返回其运行状态
 2. 当主机宕机，将自动切换从机变为主机，通过发布订阅模式通知其他从服务器，修改配置文件，让他们切换成主机
 
-<img src="/Users/chenxiayu/Library/Application Support/typora-user-images/image-20200606152846061.png" alt="image-20200606152846061" style="zoom:50%;" />
+<img src="../image/image-20200606152846061.png" alt="image-20200606152846061" style="zoom:50%;" />
 
 假设主服务器宕机
 
